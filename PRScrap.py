@@ -261,7 +261,8 @@ def PressReader(fecha, periodico):
             ImprimirArt(Art)
         driver.quit()
         return ScrapList
-    except:
+    except Exception as e:
+        print(e)
         return None
 
 PressReader("2014-08-10", "el-universal")
