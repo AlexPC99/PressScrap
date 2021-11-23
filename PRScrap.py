@@ -180,80 +180,88 @@ def Scroll(SleepTime, driver):
     time.sleep(SleepTime)
     html = driver.page_source
     soup = BeautifulSoup(html, features="html.parser")
-    f = codecs.open("test.html", "w", "utf−8")
-    f.write(html)
+    #f = codecs.open("test.html", "w", "utf−8")
+    #f.write(html)
     return soup
 
-options = webdriver.ChromeOptions()
-options.add_experimental_option('excludeSwitches', ['enable-logging'])
+def PressReader(fecha, periodico):
+    try:
+        #aaaa-dd-mm
+        options = webdriver.ChromeOptions()
+        options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-#Mac Settings
-ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
-driver = webdriver.Chrome(service = ser, options=options)
+        #Mac Settings
+        #ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
+        #driver = webdriver.Chrome(service = ser, options=options)
 
-#Windows Settings
-#driver = webdriver.Chrome(options = options)
-#driver.get("https://www.pressreader.com/mexico/el-universal/20211103/page/1/textview")
-#driver.get("https://www.pressreader.com/mexico/el-universal/20211113/textview") #<- This one wack yo
-#driver.get("https://www.pressreader.com/mexico/el-universal/20211108/page/1/textview")
-#driver.get("https://www.pressreader.com/mexico/la-jornada/20211108/page/1/textview") #<- Also Wack
-driver.get("https://www.pressreader.com/mexico/el-universal/20140610/page/1/textview")
-link = CargarPagina(driver)
-soup = BeautifulSoup(link, features="html.parser")
-ScrollFinal = False
-i = 0
-j = 0
-ClickID = ""
-Articulos = []
-phtml = None
-while ScrollFinal == False:
-    ArticulosUnicos = BuscaAID(soup, Articulos, False, i)
-    ClickID = ArticulosUnicos[0]
-    ToClick = ArticulosUnicos[1]
-    Art = Articulo()
-    if ToClick != None:
-        RPath = Elem2Xpath(ToClick)
-        element = driver.find_element_by_xpath(RPath)
-        action = ActionChains(driver)
-        action.double_click(element).perform()
-        action.release()
-        EsperaCargaTexto(driver, soup, ClickID)
-        #time.sleep(1)
-        #EsperaCargaTexto(driver, soup, ClickID)
-        html = driver.page_source
-        soup = BeautifulSoup(html, features="html.parser")
-        soup2 = BeautifulSoup(html, features="html.parser")
-        ArtCompleto = EncontrarArticulo(soup2, ClickID)
-        Dat = EncontrarDatos(ArtCompleto)
-        Art.AID = ArtCompleto['aid']
-        Art.Titulo = Dat[0]
-        Art.Subtitulo = Dat[1]
-        Art.Autor = Dat[2]
-        Art.Texto = Dat[3]
-        ImprimirArt(Art)
-        Articulos.append(Art)
-        i = i + 1
-        #if i > 3:
-        #    ScrollFinal = True
-        soup = Scroll(1, driver)
-        html = driver.page_source
-        print("\n\n")
-    else:
-        print("Didn't click anything")
-        ArtCompleto = EncontrarArticulo(soup2, ClickID)
-        Dat = EncontrarDatos(ArtCompleto)
-        Art.AID = ArtCompleto['aid']
-        ImprimirArt(Art)
-        Articulos.append(Art)
-        soup = Scroll(1, driver)
-        html = driver.page_source
-        print("\n\n")
-    if phtml == html:
-        ScrollFinal = True
-    else:
-        phtml = html
-print("Finished scraping")
-ScrapList = LimpiezaArticulos(Articulos)
-for Art in ScrapList:
-    ImprimirArt(Art)
-driver.quit()
+        #Windows Settings
+        driver = webdriver.Chrome(options = options)
+
+        FechaFull = fecha.split('-')
+        FechaStr = str(FechaFull[0])+str(FechaFull[1])+str(FechaFull[2])
+        LinkStr = "https://www.pressreader.com/mexico/"+str(periodico)+"/"+FechaStr+"/page/1/textview"
+        driver.get(LinkStr)
+        link = CargarPagina(driver)
+        soup = BeautifulSoup(link, features="html.parser")
+        ScrollFinal = False
+        i = 0
+        j = 0
+        ClickID = ""
+        Articulos = []
+        phtml = None
+        while ScrollFinal == False:
+            ArticulosUnicos = BuscaAID(soup, Articulos, False, i)
+            ClickID = ArticulosUnicos[0]
+            ToClick = ArticulosUnicos[1]
+            Art = Articulo()
+            if ToClick != None:
+                RPath = Elem2Xpath(ToClick)
+                element = driver.find_element_by_xpath(RPath)
+                action = ActionChains(driver)
+                action.double_click(element).perform()
+                action.release()
+                EsperaCargaTexto(driver, soup, ClickID)
+                #time.sleep(1)
+                #EsperaCargaTexto(driver, soup, ClickID)
+                html = driver.page_source
+                soup = BeautifulSoup(html, features="html.parser")
+                soup2 = BeautifulSoup(html, features="html.parser")
+                ArtCompleto = EncontrarArticulo(soup2, ClickID)
+                if ArtCompleto is not None:
+                    Dat = EncontrarDatos(ArtCompleto)
+                    Art.AID = ArtCompleto['aid']
+                    Art.Titulo = Dat[0]
+                    Art.Subtitulo = Dat[1]
+                    Art.Autor = Dat[2]
+                    Art.Texto = Dat[3]
+                    ImprimirArt(Art)
+                    Articulos.append(Art)
+                    soup = Scroll(1, driver)
+                i = i + 1
+                html = driver.page_source
+                print("\n\n")
+            else:
+                print("Didn't click anything")
+                ArtCompleto = EncontrarArticulo(soup2, ClickID)
+                if ArtCompleto is not None:
+                    Dat = EncontrarDatos(ArtCompleto)
+                    Art.AID = ArtCompleto['aid']
+                    ImprimirArt(Art)
+                    Articulos.append(Art)
+                    soup = Scroll(1, driver)
+                html = driver.page_source
+                print("\n\n")
+            if phtml == html:
+                ScrollFinal = True
+            else:
+                phtml = html
+        print("Finished scraping")
+        ScrapList = LimpiezaArticulos(Articulos)
+        for Art in ScrapList:
+            ImprimirArt(Art)
+        driver.quit()
+        return ScrapList
+    except:
+        return None
+
+PressReader("2014-08-10", "el-universal")
