@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
+from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from fpdf import FPDF
 
@@ -120,7 +121,7 @@ def BuscaAID(soup, Articulos, debug, run):
                         Rep = True
             if Rep == False:
                 info = Tag.find("header")
-                if info.has_attr("style"):
+                if info is not None and info.has_attr("style"):
                     StyleString = info["style"]
                     temp = StyleString.split("left: ")[1]
                     PixSize = int(temp.split("px")[0])
@@ -147,6 +148,7 @@ def BuscaAID(soup, Articulos, debug, run):
 def EsperaCargaTexto(driver, soup, aid):
     time.sleep(1)
     loaded = False
+    i = 0
     while loaded == False:
         html = driver.page_source
         soup = BeautifulSoup(html, features="html.parser")
@@ -159,18 +161,18 @@ def EsperaCargaTexto(driver, soup, aid):
                         loaded = True
                     else:
                         time.sleep(1)
+        i = i+1
+        if (i > 5):
+            loaded = True
 
 def LimpiezaArticulos(ListaArts):
     i = 0
     j = 0
-    ToRemove = []
+    NewList = []
     for Art in ListaArts:
-        if Art.Texto == None:
-            ListaArts.remove(Art)
-    for Art in ListaArts:
-        print(Art.Titulo)
-        print(Art.Texto)
-        print("\n\n")
+        if Art.Texto is not None:
+            NewList.append(Art)
+    return NewList
 
 def Scroll(SleepTime, driver):
     elm = driver.find_element_by_xpath("//body")
@@ -184,8 +186,13 @@ def Scroll(SleepTime, driver):
 
 options = webdriver.ChromeOptions()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])
+
+#Mac Settings
 ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
 driver = webdriver.Chrome(service = ser, options=options)
+
+#Windows Settings
+#driver = webdriver.Chrome(options = options)
 #driver.get("https://www.pressreader.com/mexico/el-universal/20211103/page/1/textview")
 #driver.get("https://www.pressreader.com/mexico/el-universal/20211113/textview") #<- This one wack yo
 #driver.get("https://www.pressreader.com/mexico/el-universal/20211108/page/1/textview")
@@ -246,5 +253,7 @@ while ScrollFinal == False:
     else:
         phtml = html
 print("Finished scraping")
-LimpiezaArticulos(Articulos)
+ScrapList = LimpiezaArticulos(Articulos)
+for Art in ScrapList:
+    ImprimirArt(Art)
 driver.quit()
