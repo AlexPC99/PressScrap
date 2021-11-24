@@ -6,7 +6,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
-from fpdf import FPDF
 
 class Articulo:
     Titulo = None
@@ -191,11 +190,11 @@ def PressReader(fecha, periodico):
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
         #Mac Settings
-        ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
-        driver = webdriver.Chrome(service = ser, options=options)
+        #ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
+        #driver = webdriver.Chrome(service = ser, options=options)
 
         #Windows Settings
-        #driver = webdriver.Chrome(options = options)
+        driver = webdriver.Chrome(options = options)
 
         FechaFull = fecha.split('-')
         FechaStr = str(FechaFull[0])+str(FechaFull[1])+str(FechaFull[2])
@@ -237,6 +236,8 @@ def PressReader(fecha, periodico):
                     ImprimirArt(Art)
                     Articulos.append(Art)
                     soup = Scroll(1, driver)
+                else:
+                    ScrollFinal = True
                 i = i + 1
                 html = driver.page_source
                 print("\n\n")
@@ -249,6 +250,8 @@ def PressReader(fecha, periodico):
                     ImprimirArt(Art)
                     Articulos.append(Art)
                     soup = Scroll(1, driver)
+                else:
+                    ScrollFinal = True
                 html = driver.page_source
                 print("\n\n")
             if phtml == html:
