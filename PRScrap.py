@@ -25,7 +25,7 @@ def CargarPagina(driver): #Funcion se encanrga de esperar hasta que la pagina te
             if Tag.has_attr('aid'):
                 if Tag['aid'] != "":
                     cargada = True
-    time.sleep(1)
+    time.sleep(5)
     print("Loaded")
     return driver.page_source
 
@@ -192,7 +192,7 @@ def PressReader(fecha, periodico):
         #Mac Settings
         #ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
         #driver = webdriver.Chrome(service = ser, options=options)
-        driver = webdriver.Chrome("/Users/mch/Documents/GitHub/Prueba/chromedriver")
+        driver = webdriver.Chrome("C:\Users\alejo\Desktop\Hackerman\Service\Standalone\PressScrap\chromedrive.exe")
 
         #Windows Settings
         #driver = webdriver.Chrome(options = options)
@@ -269,4 +269,4 @@ def PressReader(fecha, periodico):
         print(e)
         return None
 
-PressReader("2014-08-10", "el-universal")
+#PressReader("2014-08-10", "el-universal")
