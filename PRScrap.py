@@ -192,9 +192,10 @@ def PressReader(fecha, periodico):
         #Mac Settings
         #ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
         #driver = webdriver.Chrome(service = ser, options=options)
+        driver = webdriver.Chrome("/Users/mch/Documents/GitHub/Prueba/chromedriver")
 
         #Windows Settings
-        driver = webdriver.Chrome(options = options)
+        #driver = webdriver.Chrome(options = options)
 
         FechaFull = fecha.split('-')
         FechaStr = str(FechaFull[0])+str(FechaFull[1])+str(FechaFull[2])
