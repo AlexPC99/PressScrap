@@ -53,23 +53,12 @@ def Elem2Xpath(element): #Codigo obtenido de https://gist.github.com/ergoithz/6c
 
 def ImprimirArt(Art):
     print("\n\n")
-    print(Art.AID)
-    print(Art.Titulo)
-    print(Art.Subtitulo)
-    print(Art.Autor)
-    print(Art.Texto)
-    print("\n\n")
-
-def GuardarComoPDF(Art):
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font('arial', 'B', 14)
-    pdf.cell(0, 8, 'Notas',0,2,align='C')
-    pdf.set_font('arial', 'B', 8)
-    pdf.cell(0,10,str(Art.Titulo),0,2,align='C')
-    pdf.cell(0,10,str(Art.Subtitulo),0,2,align='C')
-    pdf.cell(0,10,str(Art.Autor),0,2,align='C')
-    pdf.output("test.pdf", 'F')
+    #print(Art.AID)
+    #print(Art.Titulo)
+    #print(Art.Subtitulo)
+    #print(Art.Autor)
+    #print(Art.Texto)
+    #print("\n\n")
 
 def EncontrarArticulo(soup, aid): #Recupera el elemento html entero del articulo en base a su ID
     listaarts = soup.find_all("article")
@@ -189,12 +178,10 @@ def PressReader(fecha, periodico):
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
 
-        #Mac Settings
-        #ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
-        #driver = webdriver.Chrome(service = ser, options=options)
         driver = webdriver.Chrome("/Users/mch/Documents/GitHub/Prueba/chromedriver")
+
         #Windows Settings
-        #driver = webdriver.Chrome(options = options)
+        #driver = webdriver.Chrome()
 
         FechaFull = fecha.split('-')
         FechaStr = str(FechaFull[0])+str(FechaFull[1])+str(FechaFull[2])
@@ -268,4 +255,4 @@ def PressReader(fecha, periodico):
         print(e)
         return None
 
-#PressReader("2014-08-10", "el-universal")
+PressReader("2020-01-02", "el-universal")
