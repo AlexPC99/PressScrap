@@ -255,4 +255,4 @@ def PressReader(fecha, periodico):
         print(e)
         return None
 
-PressReader("2020-01-02", "el-universal")
+#PressReader("2020-01-02", "el-universal")
