@@ -53,12 +53,12 @@ def Elem2Xpath(element): #Codigo obtenido de https://gist.github.com/ergoithz/6c
 
 def ImprimirArt(Art):
     print("\n\n")
-    #print(Art.AID)
-    #print(Art.Titulo)
-    #print(Art.Subtitulo)
-    #print(Art.Autor)
-    #print(Art.Texto)
-    #print("\n\n")
+    print(Art.AID)
+    print(Art.Titulo)
+    print(Art.Subtitulo)
+    print(Art.Autor)
+    print(Art.Texto)
+    print("\n\n")
 
 def EncontrarArticulo(soup, aid): #Recupera el elemento html entero del articulo en base a su ID
     listaarts = soup.find_all("article")
@@ -255,4 +255,4 @@ def PressReader(fecha, periodico):
         print(e)
         return None
 
-#PressReader("2020-01-02", "el-universal")
+#PressReader("2020-01-02", "el-sol-de-tijuana")
