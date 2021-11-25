@@ -192,7 +192,7 @@ def PressReader(fecha, periodico):
         #Mac Settings
         #ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
         #driver = webdriver.Chrome(service = ser, options=options)
-        driver = webdriver.Chrome("C:\Users\alejo\Desktop\Hackerman\Service\Standalone\PressScrap\chromedrive.exe")
+        driver = webdriver.Chrome("/Users/mch/Documents/GitHub/Prueba/chromedriver")
 
         #Windows Settings
         #driver = webdriver.Chrome(options = options)
