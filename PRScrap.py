@@ -193,7 +193,7 @@ def PressReader(fecha, periodico):
         #ser = Service("/Users/mch/Documents/GitHub/Prueba/chromedriver")
         #driver = webdriver.Chrome(service = ser, options=options)
         driver = webdriver.Chrome("/Users/mch/Documents/GitHub/Prueba/chromedriver")
-
+        print("Entro")
         #Windows Settings
         #driver = webdriver.Chrome(options = options)
 
